@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import routes from './routes'
+import https from 'https'
 
 const app = express()
 
@@ -9,4 +10,9 @@ app.use(cors())
 
 routes(app)
 
-app.listen(3001, () => console.log('Servidor UP'))
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/onemessage.quintiliano.tk/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/onemessage.quintiliano.tk/fullchain.pem')
+  };
+  
+  https.createServer(options, app).listen(3001, () => console.log("Servidor UP"))
